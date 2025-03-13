@@ -1,24 +1,20 @@
 from django.db import models
 
-
-class Project(models.Model):
-    """
-    Needed fields
-    - members (m2m field to CustomUser; create through table and enforce unique constraint for user and project)
-    - name (max_length=100)
-    - max_members (positive int)
-    - status (choice field integer type :- 0(To be started)/1(In progress)/2(Completed), with default value been 0)
-
-    Add string representation for this model with project name.
-    """
+from projects.settings import PROJECT_STATUS, TO_BE_STARTED
+from users.models import CustomUser
+from utils.models import BaseModel
 
 
-class ProjectMember(models.Model):
-    """
-    Needed fields
-    - project (fk to Project model)
-    - member (fk to User model - use AUTH_USER_MODEL from settings)
-    - Add unique constraints
+class Project(BaseModel):
+    name = models.CharField(max_length=50)
+    status = models.IntegerField(choices=PROJECT_STATUS, default=TO_BE_STARTED)
+    max_members = models.PositiveIntegerField()
+    members = models.ManyToManyField(CustomUser, through="ProjectMember")
 
-    Add string representation for this model with project name and user email/first name.
-    """
+    def __str__(self):
+        return self.name
+
+
+class ProjectMember(BaseModel):
+    member = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
