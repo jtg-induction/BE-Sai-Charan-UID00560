@@ -5,12 +5,11 @@ name = "pypi"
 
 [packages]
 coverage = "*"
-django = "*"
-django-nose = "*"
-djangorestframework = "*"
-nose = "*"
-psycopg2 = "*"
+django = "==4.2.5"
+djangorestframework = "==3.15.2"
+psycopg2 = "==2.9.7"
 python-dotenv = "*"
+pyreadline3 = "*"
 
 [dev-packages]
 pre-commit = "*"
