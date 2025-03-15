@@ -98,4 +98,5 @@ class UserLoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError("Invalid credentials. Please try again.")
 
+        data["user"] = user
         return data

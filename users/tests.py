@@ -63,27 +63,27 @@ class UserRegistrationAPIViewTestCase(APITestCase):
         self.assertEqual(400, response.status_code)
 
 
-# class UserLoginAPIViewTestCase(APITestCase):
-#     url = reverse("users:login")
+class UserLoginAPIViewTestCase(APITestCase):
+    url = reverse("users:login")
 
-#     def setUp(self):
-#         self.email = "john@snow.com"
-#         self.password = "you_know_nothing"
-#         self.user = get_user_model().objects.create_user(self.email, self.password)
+    def setUp(self):
+        self.email = "john@snow.com"
+        self.password = "you_know_nothing"
+        self.user = get_user_model().objects.create_user(self.email, self.password)
 
-#     def test_authentication_without_password(self):
-#         response = self.client.post(self.url, {"email": self.email})
-#         self.assertEqual(400, response.status_code)
+    def test_authentication_without_password(self):
+        response = self.client.post(self.url, {"email": self.email})
+        self.assertEqual(400, response.status_code)
 
-#     def test_authentication_with_wrong_password(self):
-#         response = self.client.post(
-#             self.url, {"email": self.email, "password": "I_know"}
-#         )
-#         self.assertEqual(400, response.status_code)
+    def test_authentication_with_wrong_password(self):
+        response = self.client.post(
+            self.url, {"email": self.email, "password": "I_know"}
+        )
+        self.assertEqual(400, response.status_code)
 
-#     def test_authentication_with_valid_data(self):
-#         response = self.client.post(
-#             self.url, {"email": self.email, "password": self.password}
-#         )
-#         self.assertEqual(200, response.status_code)
-#         self.assertTrue("auth_token" in json.loads(response.content))
+    def test_authentication_with_valid_data(self):
+        response = self.client.post(
+            self.url, {"email": self.email, "password": self.password}
+        )
+        self.assertEqual(200, response.status_code)
+        self.assertTrue("auth_token" in json.loads(response.content))
