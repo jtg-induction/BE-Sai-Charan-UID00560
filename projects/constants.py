@@ -1,4 +1,4 @@
-from commons.constants import BaseModelFields
+from enum import Enum
 
 TO_BE_STARTED = 0
 IN_PROGRESS = 1
@@ -11,18 +11,19 @@ PROJECT_STATUS = {
 }
 
 
-class ProjectFields(BaseModelFields):
+class ProjectFields(Enum):
     """
     Fields within Project model.
     """
 
+    ID = "id"
     NAME = "name"
     STATUS = "status"
     MAX_MEMBERS = "max_members"
     MEMEBERS = "members"
 
 
-class ProjectMemberFields(BaseModelFields):
+class ProjectMemberFields(Enum):
     """
     Fields within ProjectMember model.
     """

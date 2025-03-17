@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.hashers import make_password
-from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -22,9 +21,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = [
+        fields = "__all__"
+        read_only_fields = [
             UserFields.ID.value,
-            UserFields.FIRST_NAME.value,
-            UserFields.LAST_NAME.value,
-            UserFields.EMAIL.value,
+            UserFields.IS_STAFF,
+            UserFields.IS_SUPERUSER,
+            UserFields.DATE_JOINED.value,
+            UserFields.LAST_LOGIN.value,
+            UserFields.GROUPS.value,
+            UserFields.USER_PERMISSIONS.value,
         ]
+        extra_kwargs = {UserFields.PASSWORD.value: {"write_only": True}}
