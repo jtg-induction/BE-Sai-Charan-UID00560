@@ -8,4 +8,4 @@ class Tables(Enum):
 
 
 class BaseModelFields(Enum):
-    pass
+    ID = "id"
