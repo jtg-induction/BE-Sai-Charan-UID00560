@@ -1,6 +1,7 @@
 from django.db import models
 
-from projects.constants import PROJECT_STATUS, TO_BE_STARTED
+from commons.constants import Tables
+from projects.constants import PROJECT_STATUS, TO_BE_STARTED, ProjectMemberFields
 from users.models import CustomUser
 
 
@@ -12,7 +13,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50, unique=True)
     status = models.PositiveIntegerField(choices=PROJECT_STATUS, default=TO_BE_STARTED)
     max_members = models.PositiveIntegerField()
-    members = models.ManyToManyField(CustomUser, through="ProjectMember")
+    members = models.ManyToManyField(CustomUser, through=Tables.PROJECT_MEMBER.value)
 
     def __str__(self):
         return self.name
@@ -29,3 +30,14 @@ class ProjectMember(models.Model):
 
     member = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    ProjectMemberFields.MEMBER.value,
+                    ProjectMemberFields.PROJECT.value,
+                ],
+                name="unique_enrollment",
+            )
+        ]
