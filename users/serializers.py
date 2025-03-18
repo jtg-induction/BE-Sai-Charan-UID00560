@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
@@ -147,3 +147,20 @@ class UserRegistrationSerializer(CustomUserSerializerWithBasicInfo):
     def create(self, validated_data):
         validated_data.pop("confirm_password")
         return super().create(validated_data)
+
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
+
+    def validate(self, data):
+        try:
+            user = CustomUser.objects.get(email=data["email"])
+            if not user.check_password(data["password"]):
+                raise serializers.ValidationError(
+                    "Invalid credentials. Please try again."
+                )
+            data["user"] = user
+            return data
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("Invalid credentials. Please try again.")
