@@ -1,9 +1,8 @@
 from rest_framework import serializers
 
+from commons.serializers import BaseModelSerializer
 from projects.models import Project
-from projects.settings import PROJECT_STATUS
 from users.serializers import CustomUserSerializerWithTodoStats
-from utils.serializers import BaseModelSerializer
 
 
 class ProjectSerializer(BaseModelSerializer):

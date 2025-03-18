@@ -3,8 +3,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
+from commons.serializers import BaseModelSerializer
 from users.constants import UserFields
-from utils.serializers import BaseModelSerializer
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
