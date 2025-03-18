@@ -15,6 +15,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(null=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = UserFields.EMAIL.value

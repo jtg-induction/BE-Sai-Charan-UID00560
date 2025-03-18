@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 from commons.serializers import BaseModelSerializer
 from users.constants import UserFields
+from users.models import CustomUser
 
 
 class CustomUserSerializer(BaseModelSerializer):
@@ -86,27 +89,41 @@ class CustomUserWithProjectStats(CustomUserSerializerWithBasicInfo):
         ]
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
+class UserRegistrationSerializer(CustomUserSerializerWithBasicInfo):
+    """
+    Serializer for validating data in user register Api.
+    """
+
+    first_name = serializers.RegexField(
+        regex=r"^[a-zA-Z0-9]+$",
+        error_messages={"invalid": "Only alphanumeric characters are allowed."},
+    )
+    last_name = serializers.RegexField(
+        regex=r"^[a-zA-Z0-9]+$",
+        error_messages={"invalid": "Only alphanumeric characters are allowed."},
+    )
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
+    confirm_password = serializers.CharField(
+        write_only=True, style={"input_type": "password"}
+    )
     token = serializers.SerializerMethodField()
 
-    class Meta:
-        model = CustomUser
-        fields = [
-            "email",
-            "first_name",
-            "last_name",
-            "password",
+    class Meta(CustomUserSerializerWithBasicInfo.Meta):
+        fields = CustomUserSerializerWithBasicInfo.Meta.fields + [
+            UserFields.PASSWORD.value,
             "confirm_password",
-            "date_joined",
             "token",
         ]
-        read_only_fields = ["date_joined", "token"]
+        read_only_fields = CustomUserSerializerWithBasicInfo.Meta.read_only_fields + [
+            "token"
+        ]
 
     def get_token(self, user):
-        token, _ = Token.objects.get_or_create(user=user)
-        return token.key
+        try:
+            token, _ = Token.objects.get_or_create(user=user)
+            return token.key
+        except Exception:
+            raise serializers.ValidationError({"token": "Unable to create a token"})
 
     def validate(self, data):
         if data["password"] != data["confirm_password"]:
@@ -115,25 +132,18 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             )
         return data
 
-    def create(self, validated_data):
-        validated_data.pop("confirm_password")
-        user = CustomUser.objects.create_user(**validated_data)
-        return user
+    def validate_password(self, password):
+        try:
+            validate_password(password)
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return password
 
     def validate_email(self, value):
         if CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("A user with this email already exists.")
         return value
 
-
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        user = authenticate(email=data["email"], password=data["password"])
-
-        if not user:
-            raise serializers.ValidationError("Invalid credentials. Please try again.")
-
-        return data
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        return super().create(validated_data)
