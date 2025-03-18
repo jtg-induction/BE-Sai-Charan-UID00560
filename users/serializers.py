@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 from commons.serializers import BaseModelSerializer
 from users.constants import UserFields
