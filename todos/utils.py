@@ -497,8 +497,6 @@ def fetch_user_wise_project_done():
             UserFields.EMAIL.value,
         )
     )
-    serializer = CustomUserWithProjectStats(
+    return CustomUserWithProjectStats(
         users, many=True, exclude_fields=[UserFields.ID.value]
-    )
-    print(serializer.data[0])
-    return serializer.data
+    ).data
