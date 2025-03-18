@@ -4,11 +4,11 @@ TO_BE_STARTED = 0
 IN_PROGRESS = 1
 COMPLETED = 2
 
-PROJECT_STATUS = {
-    TO_BE_STARTED: "to-be-started",
-    IN_PROGRESS: "in-progress",
-    COMPLETED: "completed",
-}
+PROJECT_STATUS = [
+    (TO_BE_STARTED, "to-be-started"),
+    (IN_PROGRESS, "in-progress"),
+    (COMPLETED, "completed"),
+]
 
 
 class ProjectFields(Enum):
@@ -20,7 +20,7 @@ class ProjectFields(Enum):
     NAME = "name"
     STATUS = "status"
     MAX_MEMBERS = "max_members"
-    MEMEBERS = "members"
+    MEMBERS = "members"
 
 
 class ProjectMemberFields(Enum):

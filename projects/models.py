@@ -12,7 +12,9 @@ class Project(models.Model):
     name = models.CharField(max_length=50, unique=True)
     status = models.PositiveIntegerField(choices=PROJECT_STATUS, default=TO_BE_STARTED)
     max_members = models.PositiveIntegerField()
-    members = models.ManyToManyField(CustomUser, through="ProjectMember")
+    members = models.ManyToManyField(
+        CustomUser, through="ProjectMember", related_name="projects"
+    )
 
     def __str__(self):
         return self.name

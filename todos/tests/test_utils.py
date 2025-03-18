@@ -9,6 +9,7 @@ class TestSetupMixin(object):
 
     def setUp(self):
         settings.DEBUG = True  # For using connection.queries.
+        self.maxDiff = None
 
 
 class ORMUtilTest(TestSetupMixin, TestCase):
@@ -70,13 +71,14 @@ class ORMUtilTest(TestSetupMixin, TestCase):
         )
 
     def test_fetch_all_todo_list_with_user_details(self):
+        self.maxDiff = None
         expected_data = [
             {
                 "id": 2,
                 "name": "TODO - 2",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -85,9 +87,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 3,
                 "name": "TODO - 3",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -96,9 +98,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 4,
                 "name": "TODO - 4",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -107,9 +109,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 5,
                 "name": "TODO - 5",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -118,9 +120,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 6,
                 "name": "TODO - 6",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -129,9 +131,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 7,
                 "name": "TODO - 7",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -140,9 +142,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 8,
                 "name": "TODO - 8",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -151,9 +153,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 9,
                 "name": "TODO - 9",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -162,9 +164,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 10,
                 "name": "TODO - 10",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -173,9 +175,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 11,
                 "name": "TODO - 11",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -184,9 +186,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 12,
                 "name": "TODO - 12",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -195,9 +197,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 13,
                 "name": "TODO - 13",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -206,9 +208,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 14,
                 "name": "TODO - 14",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -217,9 +219,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 15,
                 "name": "TODO - 15",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -228,9 +230,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 16,
                 "name": "TODO - 16",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -239,9 +241,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 17,
                 "name": "TODO - 17",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -250,9 +252,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 18,
                 "name": "TODO - 18",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -261,9 +263,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 19,
                 "name": "TODO - 19",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -272,9 +274,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 20,
                 "name": "TODO - 20",
-                "status": "To Do",
-                "created_at": "05:30 AM, 03 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 03 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -283,9 +285,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 21,
                 "name": "TODO - 21",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -294,9 +296,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 22,
                 "name": "TODO - 22",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -305,9 +307,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 23,
                 "name": "TODO - 23",
-                "status": "To Do",
-                "created_at": "05:30 AM, 03 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 03 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -316,9 +318,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 24,
                 "name": "TODO - 24",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -327,9 +329,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 25,
                 "name": "TODO - 25",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -338,9 +340,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 26,
                 "name": "TODO - 26",
-                "status": "To Do",
-                "created_at": "05:30 AM, 03 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 03 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -349,9 +351,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 27,
                 "name": "TODO - 27",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -360,9 +362,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 28,
                 "name": "TODO - 28",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -371,9 +373,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 29,
                 "name": "TODO - 29",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -382,9 +384,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 30,
                 "name": "TODO - 30",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -393,9 +395,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 31,
                 "name": "TODO - 31",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -404,9 +406,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 32,
                 "name": "TODO - 32",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -415,9 +417,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 33,
                 "name": "TODO - 33",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -426,9 +428,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 34,
                 "name": "TODO - 34",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -437,9 +439,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 35,
                 "name": "TODO - 35",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -448,9 +450,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 36,
                 "name": "TODO - 36",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -459,9 +461,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 37,
                 "name": "TODO - 37",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -470,9 +472,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 38,
                 "name": "TODO - 38",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -481,9 +483,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 39,
                 "name": "TODO - 39",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -492,9 +494,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 40,
                 "name": "TODO - 40",
-                "status": "To Do",
-                "created_at": "05:30 AM, 03 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 03 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -503,9 +505,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 41,
                 "name": "TODO - 41",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -514,9 +516,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 42,
                 "name": "TODO - 42",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -525,9 +527,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 43,
                 "name": "TODO - 43",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Gurpreet",
                     "last_name": "Singh",
                     "email": "gurpreet.singh@joshtechnologygroup.com",
@@ -536,9 +538,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 44,
                 "name": "TODO - 44",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -547,9 +549,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 45,
                 "name": "TODO - 45",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -558,9 +560,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 46,
                 "name": "TODO - 46",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -569,9 +571,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 47,
                 "name": "TODO - 47",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -580,9 +582,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 48,
                 "name": "TODO - 48",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -591,9 +593,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 49,
                 "name": "TODO - 49",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -602,9 +604,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 50,
                 "name": "TODO - 50",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -613,9 +615,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 51,
                 "name": "TODO - 51",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -624,9 +626,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 52,
                 "name": "TODO - 52",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -635,9 +637,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 53,
                 "name": "TODO - 53",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -646,9 +648,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 54,
                 "name": "TODO - 54",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -657,9 +659,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 55,
                 "name": "TODO - 55",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -668,9 +670,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 56,
                 "name": "TODO - 56",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -679,9 +681,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 57,
                 "name": "TODO - 57",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -690,9 +692,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 58,
                 "name": "TODO - 58",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -701,9 +703,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 59,
                 "name": "TODO - 59",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -712,9 +714,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 60,
                 "name": "TODO - 60",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -723,9 +725,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 61,
                 "name": "TODO - 61",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Naveen",
                     "last_name": "Kumar",
                     "email": "naveenk@joshtechnologygroup.com",
@@ -734,9 +736,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 62,
                 "name": "TODO - 62",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -745,9 +747,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 63,
                 "name": "TODO - 63",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -756,9 +758,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 64,
                 "name": "TODO - 64",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -767,9 +769,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 65,
                 "name": "TODO - 65",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -778,9 +780,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 66,
                 "name": "TODO - 66",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -789,9 +791,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 67,
                 "name": "TODO - 67",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -800,9 +802,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 68,
                 "name": "TODO - 68",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -811,9 +813,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 69,
                 "name": "TODO - 69",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -822,9 +824,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 70,
                 "name": "TODO - 70",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -833,9 +835,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 71,
                 "name": "TODO - 71",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Nikhil",
                     "last_name": "Khurana",
                     "email": "nikhil.khurana@joshtechnologygroup.com",
@@ -844,9 +846,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 72,
                 "name": "TODO - 72",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -855,9 +857,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 73,
                 "name": "TODO - 73",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -866,9 +868,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 74,
                 "name": "TODO - 74",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -877,9 +879,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 75,
                 "name": "TODO - 75",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -888,9 +890,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 76,
                 "name": "TODO - 76",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -899,9 +901,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 77,
                 "name": "TODO - 77",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -910,9 +912,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 78,
                 "name": "TODO - 78",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -921,9 +923,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 79,
                 "name": "TODO - 79",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -932,9 +934,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 80,
                 "name": "TODO - 80",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -943,9 +945,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 81,
                 "name": "TODO - 81",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -954,9 +956,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 82,
                 "name": "TODO - 82",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -965,9 +967,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 83,
                 "name": "TODO - 83",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -976,9 +978,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 84,
                 "name": "TODO - 84",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -987,9 +989,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 85,
                 "name": "TODO - 85",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -998,9 +1000,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 86,
                 "name": "TODO - 86",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1009,9 +1011,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 87,
                 "name": "TODO - 87",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1020,9 +1022,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 88,
                 "name": "TODO - 88",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1031,9 +1033,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 89,
                 "name": "TODO - 89",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1042,9 +1044,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 90,
                 "name": "TODO - 90",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1053,9 +1055,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 91,
                 "name": "TODO - 91",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1064,9 +1066,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 92,
                 "name": "TODO - 92",
-                "status": "Done",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1075,9 +1077,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 93,
                 "name": "TODO - 93",
-                "status": "To Do",
-                "created_at": "05:30 AM, 03 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 03 Jan, 2022",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1086,9 +1088,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 94,
                 "name": "TODO - 94",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1097,9 +1099,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 95,
                 "name": "TODO - 95",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1108,9 +1110,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 96,
                 "name": "TODO - 96",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1119,9 +1121,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 97,
                 "name": "TODO - 97",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1130,9 +1132,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 98,
                 "name": "TODO - 98",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1141,9 +1143,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 99,
                 "name": "TODO - 99",
-                "status": "To Do",
-                "created_at": "05:30 AM, 28 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 28 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1152,9 +1154,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 100,
                 "name": "TODO - 100",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1163,9 +1165,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 101,
                 "name": "TODO - 101",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Sunny",
                     "last_name": "Singhal",
                     "email": "sunny.singhal@joshtechnologygroup.com",
@@ -1174,9 +1176,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 102,
                 "name": "TODO - 102",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1185,9 +1187,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 103,
                 "name": "TODO - 103",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1196,9 +1198,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 104,
                 "name": "TODO - 104",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1207,9 +1209,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 105,
                 "name": "TODO - 105",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1218,9 +1220,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 106,
                 "name": "TODO - 106",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1229,9 +1231,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 107,
                 "name": "TODO - 107",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1240,9 +1242,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 108,
                 "name": "TODO - 108",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1251,9 +1253,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 109,
                 "name": "TODO - 109",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1262,9 +1264,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 110,
                 "name": "TODO - 110",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1273,9 +1275,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 111,
                 "name": "TODO - 111",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1284,9 +1286,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 112,
                 "name": "TODO - 112",
-                "status": "To Do",
-                "created_at": "05:30 AM, 30 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 30 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1295,9 +1297,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 113,
                 "name": "TODO - 113",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1306,9 +1308,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 114,
                 "name": "TODO - 114",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1317,9 +1319,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 115,
                 "name": "TODO - 115",
-                "status": "To Do",
-                "created_at": "05:30 AM, 27 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 27 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1328,9 +1330,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 116,
                 "name": "TODO - 116",
-                "status": "Done",
-                "created_at": "05:30 AM, 29 Dec, 2021",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 29 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1339,9 +1341,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 117,
                 "name": "TODO - 117",
-                "status": "To Do",
-                "created_at": "05:30 AM, 31 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 31 Dec, 2021",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1350,9 +1352,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 118,
                 "name": "TODO - 118",
-                "status": "Done",
-                "created_at": "05:30 AM, 01 Jan, 2022",
-                "creator": {
+                "done": True,
+                "date_created": "05:30 AM, 01 Jan, 2022",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1361,9 +1363,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 119,
                 "name": "TODO - 119",
-                "status": "To Do",
-                "created_at": "05:30 AM, 02 Jan, 2022",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 02 Jan, 2022",
+                "user": {
                     "first_name": "Chirag",
                     "last_name": "Gupta",
                     "email": "chirag.gupta@joshtechnologygroup.com",
@@ -1372,9 +1374,9 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 1,
                 "name": "TODO - 1",
-                "status": "To Do",
-                "created_at": "05:30 AM, 25 Dec, 2021",
-                "creator": {
+                "done": False,
+                "date_created": "05:30 AM, 25 Dec, 2021",
+                "user": {
                     "first_name": "Amal",
                     "last_name": "Raj",
                     "email": "amal.raj@joshtechnologygroup.com",
@@ -1393,81 +1395,82 @@ class ORMUtilTest(TestSetupMixin, TestCase):
         self.assertCountEqual(data, expected_data)
 
     def test_fetch_projects_details(self):
+
         expected_data = [
             {
                 "id": 5,
                 "name": "Project E",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 1,
                 "max_members": 1,
             },
             {
                 "id": 4,
                 "name": "Project D",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 1,
                 "max_members": 4,
             },
             {
                 "id": 10,
                 "name": "Project J",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 3,
                 "max_members": 3,
             },
             {
                 "id": 6,
                 "name": "Project F",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 4,
                 "max_members": 5,
             },
             {
                 "id": 2,
                 "name": "Project B",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 7,
                 "name": "Project G",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 1,
                 "name": "Project A",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 2,
                 "max_members": 3,
             },
             {
                 "id": 8,
                 "name": "Project H",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 1,
                 "max_members": 1,
             },
             {
                 "id": 11,
                 "name": "Project K",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 4,
                 "max_members": 4,
             },
             {
                 "id": 9,
                 "name": "Project I",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 3,
                 "name": "Project C",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 3,
                 "max_members": 3,
             },
@@ -1625,48 +1628,48 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 "name": "TODO - 18",
                 "creator": "Amal Raj",
                 "email": "amal.raj@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
             {
                 "id": 25,
                 "name": "TODO - 25",
                 "creator": "Gurpreet Singh",
                 "email": "gurpreet.singh@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
             {
                 "id": 35,
                 "name": "TODO - 35",
                 "creator": "Gurpreet Singh",
                 "email": "gurpreet.singh@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
             {
                 "id": 78,
                 "name": "TODO - 78",
                 "creator": "Sunny Singhal",
                 "email": "sunny.singhal@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
             {
                 "id": 87,
                 "name": "TODO - 87",
                 "creator": "Sunny Singhal",
                 "email": "sunny.singhal@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
             {
                 "id": 92,
                 "name": "TODO - 92",
                 "creator": "Sunny Singhal",
                 "email": "sunny.singhal@joshtechnologygroup.com",
-                "created_at": "05:30 AM, 26 Dec, 2021",
-                "status": "Done",
+                "date_created": "05:30 AM, 26 Dec, 2021",
+                "done": True,
             },
         ]
         db_hit_count = len(connection.queries)
@@ -1684,14 +1687,14 @@ class ORMUtilTest(TestSetupMixin, TestCase):
 
     def test_fetch_project_with_member_name_start_or_end_with_a(self):
         expected_data = [
-            {"project_name": "Project G", "done": False, "max_members": 2},
-            {"project_name": "Project J", "done": True, "max_members": 3},
-            {"project_name": "Project K", "done": False, "max_members": 4},
-            {"project_name": "Project B", "done": True, "max_members": 2},
-            {"project_name": "Project I", "done": True, "max_members": 2},
-            {"project_name": "Project E", "done": False, "max_members": 1},
-            {"project_name": "Project C", "done": False, "max_members": 3},
-            {"project_name": "Project F", "done": False, "max_members": 5},
+            {"name": "Project G", "status": "in-progress", "max_members": 2},
+            {"name": "Project K", "status": "to-be-started", "max_members": 4},
+            {"name": "Project B", "status": "completed", "max_members": 2},
+            {"name": "Project F", "status": "to-be-started", "max_members": 5},
+            {"name": "Project I", "status": "completed", "max_members": 2},
+            {"name": "Project E", "status": "in-progress", "max_members": 1},
+            {"name": "Project C", "status": "in-progress", "max_members": 3},
+            {"name": "Project J", "status": "completed", "max_members": 3},
         ]
 
         db_hit_count = len(connection.queries)
@@ -1708,7 +1711,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
     def test_fetch_project_wise_report(self):
         expected_data = [
             {
-                "project_title": "Project A",
+                "name": "Project A",
                 "report": [
                     {
                         "first_name": "Gurpreet",
@@ -1727,7 +1730,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project B",
+                "name": "Project B",
                 "report": [
                     {
                         "first_name": "Amal",
@@ -1746,7 +1749,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project C",
+                "name": "Project C",
                 "report": [
                     {
                         "first_name": "Chirag",
@@ -1772,7 +1775,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project D",
+                "name": "Project D",
                 "report": [
                     {
                         "first_name": "Naveen",
@@ -1784,7 +1787,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project E",
+                "name": "Project E",
                 "report": [
                     {
                         "first_name": "Chirag",
@@ -1796,7 +1799,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project F",
+                "name": "Project F",
                 "report": [
                     {
                         "first_name": "Chirag",
@@ -1829,7 +1832,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project G",
+                "name": "Project G",
                 "report": [
                     {
                         "first_name": "Amal",
@@ -1848,7 +1851,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project H",
+                "name": "Project H",
                 "report": [
                     {
                         "first_name": "Naveen",
@@ -1860,7 +1863,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project I",
+                "name": "Project I",
                 "report": [
                     {
                         "first_name": "Chirag",
@@ -1879,7 +1882,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project J",
+                "name": "Project J",
                 "report": [
                     {
                         "first_name": "Gurpreet",
@@ -1905,7 +1908,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
                 ],
             },
             {
-                "project_title": "Project K",
+                "name": "Project K",
                 "report": [
                     {
                         "first_name": "Amal",
@@ -1950,7 +1953,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
         )
         self.assertListEqual(data, expected_data)
 
-    def test_fetch_user_wise_project_status(self):
+    def test_fetch_user_wise_project_done(self):
         expected_data = [
             {
                 "first_name": "Nikhil",
@@ -2003,12 +2006,12 @@ class ORMUtilTest(TestSetupMixin, TestCase):
         ]
 
         db_hit_count = len(connection.queries)
-        data = todos_utils.fetch_user_wise_project_status()
+        data = todos_utils.fetch_user_wise_project_done()
         new_db_hit_count = len(connection.queries)
         actual_hit_count = new_db_hit_count - db_hit_count
         self.assertEqual(
             actual_hit_count,
-            1,
+            4,
             msg="Expected only 1 db hit got {}".format(new_db_hit_count - db_hit_count),
         )
         self.assertListEqual(data, expected_data)
