@@ -151,13 +151,16 @@ class UserRegistrationSerializer(CustomUserSerializerWithBasicInfo):
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
 
     def validate(self, data):
-        user = authenticate(email=data["email"], password=data["password"])
-
-        if not user:
+        try:
+            user = CustomUser.objects.get(email=data["email"])
+            if not user.check_password(data["password"]):
+                raise serializers.ValidationError(
+                    "Invalid credentials. Please try again."
+                )
+            data["user"] = user
+            return data
+        except CustomUser.DoesNotExist:
             raise serializers.ValidationError("Invalid credentials. Please try again.")
-
-        data["user"] = user
-        return data
