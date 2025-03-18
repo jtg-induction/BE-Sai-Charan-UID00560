@@ -1,24 +1,42 @@
 from django.db import models
 
+from projects.constants import PROJECT_STATUS, TO_BE_STARTED, ProjectMemberFields
+from users.models import CustomUser
+
 
 class Project(models.Model):
     """
-    Needed fields
-    - members (m2m field to CustomUser; create through table and enforce unique constraint for user and project)
-    - name (max_length=100)
-    - max_members (positive int)
-    - status (choice field integer type :- 0(To be started)/1(In progress)/2(Completed), with default value been 0)
-
-    Add string representation for this model with project name.
+    Model that represents a project.
     """
+
+    name = models.CharField(max_length=50, unique=True)
+    status = models.PositiveIntegerField(choices=PROJECT_STATUS, default=TO_BE_STARTED)
+    max_members = models.PositiveIntegerField()
+    members = models.ManyToManyField(CustomUser, through="ProjectMember")
+
+    def __str__(self):
+        return self.name
 
 
 class ProjectMember(models.Model):
     """
-    Needed fields
-    - project (fk to Project model)
-    - member (fk to User model - use AUTH_USER_MODEL from settings)
-    - Add unique constraints
+    Represents the association between a user and a project.
 
-    Add string representation for this model with project name and user email/first name.
+    This model is used as a through table for the many-to-many relationship
+    between `Project` and `CustomUser`, allowing for additional customization
+    if needed in the future.
     """
+
+    member = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    ProjectMemberFields.MEMBER.value,
+                    ProjectMemberFields.PROJECT.value,
+                ],
+                name="unique_enrollment",
+            )
+        ]
