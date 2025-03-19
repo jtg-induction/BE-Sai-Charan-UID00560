@@ -112,12 +112,12 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
     def get_users_to_remove(self, instance, member_ids, project_current_members):
         remove_user = []
         logs = {}
-        for member in member_ids:
-            if member in project_current_members:
-                remove_user.append(member)
-                logs[member.id] = "User removed successfully."
+        for member_id in member_ids:
+            if member_id in project_current_members:
+                remove_user.append(member_id)
+                logs[member_id] = "User removed successfully."
             else:
-                logs[member.id] = "User is not a member of project."
+                logs[member_id] = "User is not a member of project."
 
         ProjectMember.objects.filter(
             project=instance, member_id__in=remove_user
