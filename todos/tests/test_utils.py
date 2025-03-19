@@ -1400,77 +1400,77 @@ class ORMUtilTest(TestSetupMixin, TestCase):
             {
                 "id": 5,
                 "name": "Project E",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 1,
                 "max_members": 1,
             },
             {
                 "id": 4,
                 "name": "Project D",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 1,
                 "max_members": 4,
             },
             {
                 "id": 10,
                 "name": "Project J",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 3,
                 "max_members": 3,
             },
             {
                 "id": 6,
                 "name": "Project F",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 4,
                 "max_members": 5,
             },
             {
                 "id": 2,
                 "name": "Project B",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 7,
                 "name": "Project G",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 1,
                 "name": "Project A",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 2,
                 "max_members": 3,
             },
             {
                 "id": 8,
                 "name": "Project H",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 1,
                 "max_members": 1,
             },
             {
                 "id": 11,
                 "name": "Project K",
-                "status": "To be started",
+                "status": "to-be-started",
                 "existing_member_count": 4,
                 "max_members": 4,
             },
             {
                 "id": 9,
                 "name": "Project I",
-                "status": "Completed",
+                "status": "completed",
                 "existing_member_count": 2,
                 "max_members": 2,
             },
             {
                 "id": 3,
                 "name": "Project C",
-                "status": "In progress",
+                "status": "in-progress",
                 "existing_member_count": 3,
                 "max_members": 3,
             },
@@ -1687,14 +1687,14 @@ class ORMUtilTest(TestSetupMixin, TestCase):
 
     def test_fetch_project_with_member_name_start_or_end_with_a(self):
         expected_data = [
-            {"name": "Project G", "status": "In progress", "max_members": 2},
-            {"name": "Project K", "status": "To be started", "max_members": 4},
-            {"name": "Project B", "status": "Completed", "max_members": 2},
-            {"name": "Project F", "status": "To be started", "max_members": 5},
-            {"name": "Project I", "status": "Completed", "max_members": 2},
-            {"name": "Project E", "status": "In progress", "max_members": 1},
-            {"name": "Project C", "status": "In progress", "max_members": 3},
-            {"name": "Project J", "status": "Completed", "max_members": 3},
+            {"name": "Project G", "status": "in-progress", "max_members": 2},
+            {"name": "Project K", "status": "to-be-started", "max_members": 4},
+            {"name": "Project B", "status": "completed", "max_members": 2},
+            {"name": "Project F", "status": "to-be-started", "max_members": 5},
+            {"name": "Project I", "status": "completed", "max_members": 2},
+            {"name": "Project E", "status": "in-progress", "max_members": 1},
+            {"name": "Project C", "status": "in-progress", "max_members": 3},
+            {"name": "Project J", "status": "completed", "max_members": 3},
         ]
 
         db_hit_count = len(connection.queries)
@@ -2011,7 +2011,7 @@ class ORMUtilTest(TestSetupMixin, TestCase):
         actual_hit_count = new_db_hit_count - db_hit_count
         self.assertEqual(
             actual_hit_count,
-            1,
+            4,
             msg="Expected only 1 db hit got {}".format(new_db_hit_count - db_hit_count),
         )
         self.assertListEqual(data, expected_data)

@@ -1,74 +1,129 @@
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
+from commons.serializers import BaseModelSerializer
+from users.constants import UserFields
 from users.models import CustomUser
-from utils.serializers import BaseModelSerializer
 
 
 class CustomUserSerializer(BaseModelSerializer):
+    """
+    Serializer for interacting with users data.
+    """
+
+    def create(self, validated_data):
+        password = validated_data.pop("password", None)
+        user = get_user_model().objects.create(**validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
 
     class Meta:
         model = get_user_model()
-        fields = ["id", "first_name", "last_name", "email"]
+        fields = "__all__"
+        read_only_fields = [
+            UserFields.ID.value,
+            UserFields.IS_STAFF,
+            UserFields.IS_SUPERUSER,
+            UserFields.DATE_JOINED.value,
+            UserFields.LAST_LOGIN.value,
+            UserFields.GROUPS.value,
+            UserFields.USER_PERMISSIONS.value,
+        ]
+        extra_kwargs = {UserFields.PASSWORD.value: {"write_only": True}}
 
 
-class CustomUserSerializerWithTodoStats(BaseModelSerializer):
-    completed_count = serializers.IntegerField(read_only=True)
-    pending_count = serializers.IntegerField(read_only=True)
+class CustomUserSerializerWithBasicInfo(CustomUserSerializer):
+    """
+    User Serializer for basic information of user
+    """
 
     class Meta:
         model = get_user_model()
         fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "email",
-            "completed_count",
+            UserFields.ID.value,
+            UserFields.EMAIL.value,
+            UserFields.FIRST_NAME.value,
+            UserFields.LAST_NAME.value,
+        ]
+        read_only_fields = [UserFields.ID]
+
+
+class CustomUserSerializerWithTodoStats(CustomUserSerializerWithBasicInfo):
+    """
+    User serializer with 'completed' and 'pending' task count under that user.
+    """
+
+    completed_count = serializers.IntegerField(read_only=True)
+    pending_count = serializers.IntegerField(read_only=True)
+
+    class Meta(CustomUserSerializerWithBasicInfo.Meta):
+        fields = CustomUserSerializerWithBasicInfo.Meta.fields + [
             "pending_count",
+            "completed_count",
         ]
 
 
-class CustomUserWithProjectStats(BaseModelSerializer):
+class CustomUserWithProjectStats(CustomUserSerializerWithBasicInfo):
+    """
+    User serializer which includes count of projects of different status of which the user is part of.
+    """
 
     to_do_projects = serializers.ListField(child=serializers.CharField())
     in_progress_projects = serializers.ListField(child=serializers.CharField())
     completed_projects = serializers.ListField(child=serializers.CharField())
 
-    class Meta:
-        model = get_user_model()
-        fields = [
-            "first_name",
-            "last_name",
-            "email",
+    class Meta(CustomUserSerializerWithBasicInfo.Meta):
+        fields = CustomUserSerializerWithBasicInfo.Meta.fields + [
+            "to_do_projects",
+            "in_progress_projects",
+            "completed_projects",
+        ]
+        read_only_fields = CustomUserSerializerWithBasicInfo.Meta.read_only_fields + [
             "to_do_projects",
             "in_progress_projects",
             "completed_projects",
         ]
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
+class UserRegistrationSerializer(CustomUserSerializerWithBasicInfo):
+    """
+    Serializer for validating data in user register Api.
+    """
+
+    first_name = serializers.RegexField(
+        regex=r"^[a-zA-Z0-9]+$",
+        error_messages={"invalid": "Only alphanumeric characters are allowed."},
+    )
+    last_name = serializers.RegexField(
+        regex=r"^[a-zA-Z0-9]+$",
+        error_messages={"invalid": "Only alphanumeric characters are allowed."},
+    )
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
+    confirm_password = serializers.CharField(
+        write_only=True, style={"input_type": "password"}
+    )
     token = serializers.SerializerMethodField()
 
-    class Meta:
-        model = CustomUser
-        fields = [
-            "email",
-            "first_name",
-            "last_name",
-            "password",
+    class Meta(CustomUserSerializerWithBasicInfo.Meta):
+        fields = CustomUserSerializerWithBasicInfo.Meta.fields + [
+            UserFields.PASSWORD.value,
             "confirm_password",
-            "date_joined",
             "token",
         ]
-        read_only_fields = ["date_joined", "token"]
+        read_only_fields = CustomUserSerializerWithBasicInfo.Meta.read_only_fields + [
+            "token"
+        ]
 
     def get_token(self, user):
-        token, _ = Token.objects.get_or_create(user=user)
-        return token.key
+        try:
+            token, _ = Token.objects.get_or_create(user=user)
+            return token.key
+        except Exception:
+            raise serializers.ValidationError({"token": "Unable to create a token"})
 
     def validate(self, data):
         if data["password"] != data["confirm_password"]:
@@ -77,26 +132,35 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             )
         return data
 
-    def create(self, validated_data):
-        validated_data.pop("confirm_password")
-        user = CustomUser.objects.create_user(**validated_data)
-        return user
+    def validate_password(self, password):
+        try:
+            validate_password(password)
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return password
 
     def validate_email(self, value):
         if CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("A user with this email already exists.")
         return value
 
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        return super().create(validated_data)
+
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
 
     def validate(self, data):
-        user = authenticate(email=data["email"], password=data["password"])
-
-        if not user:
+        try:
+            user = CustomUser.objects.get(email=data["email"])
+            if not user.check_password(data["password"]):
+                raise serializers.ValidationError(
+                    "Invalid credentials. Please try again."
+                )
+            data["user"] = user
+            return data
+        except CustomUser.DoesNotExist:
             raise serializers.ValidationError("Invalid credentials. Please try again.")
-
-        data["user"] = user
-        return data
