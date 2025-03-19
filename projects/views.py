@@ -1,51 +1,54 @@
-from rest_framework import viewsets
+from rest_framework import mixins, status, viewsets
+from rest_framework.response import Response
 
 from projects.models import Project
 from projects.serializers import ProjectUpdateMemberSerializer
 
 
-class ProjectMemberApiViewSet(viewsets.ModelViewSet):
+class ProjectMemberApiViewSet(
+    mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet
+):
     """
-    constraints
-     - a user can be a member of max 2 projects only
-     - a project can have at max N members defined in database for each project
-    functionalities
-    - add users to projects
-
-      Request
-      { user_ids: [1,2,...n] }
-      Response
-      {
-        logs: {
-          <user_id>: <status messages>
-        }
-      }
-      following are the possible status messages
-      case1: if user is added successfully then - "Member added Successfully"
-      case2: if user is already a member then - "User is already a Member"
-      case3: if user is already added to 2 projects - "Cannot add as User is a member in two projects"
-
-      there will be many other cases think of that
-
-    - update to remove users from projects
-
-      Request
-      { user_ids: [1,2,...n] }
-
-      Response
-      {
-        logs: {
-          <user_id>: <status messages>
-        }
-      }
-
-      there will be many other cases think of that and share on forum
+    View Set for adding or removing users from a project.
     """
 
     queryset = Project.objects.all()
     serializer_class = ProjectUpdateMemberSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context["action"] = self.kwargs.get("action", None)
-        return context
+    def create(self, request, *args, **kwargs):
+        """Handles adding members to the project."""
+
+        project = self.get_object()
+        serializer = self.get_serializer(
+            instance=project,
+            data=request.data,
+            partial=True,
+            context={"action": "add"},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {"logs": serializer.context["logs"]},
+            status=status.HTTP_200_OK,
+        )
+
+    def destroy(self, request, *args, **kwargs):
+        """Handles removing members from the project."""
+
+        project = self.get_object()
+        serializer = self.get_serializer(
+            instance=project,
+            data=request.data,
+            partial=True,
+            context={"action": "remove"},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {
+                "logs": serializer.context["logs"],
+            },
+            status=status.HTTP_200_OK,
+        )

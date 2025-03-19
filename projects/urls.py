@@ -4,8 +4,8 @@ from projects.views import ProjectMemberApiViewSet
 
 urlpatterns = [
     path(
-        "projects/<str:action>/<int:pk>/",
-        ProjectMemberApiViewSet.as_view({"patch": "partial_update"}),
+        "projects/<int:pk>/members/",
+        ProjectMemberApiViewSet.as_view({"post": "create", "delete": "destroy"}),
         name="project-member-update",
     )
 ]

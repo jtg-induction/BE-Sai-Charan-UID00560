@@ -1,4 +1,5 @@
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import Count
 from rest_framework import serializers
 
 from commons.serializers import BaseModelSerializer
@@ -39,6 +40,10 @@ class ProjectSerializerWithReport(ProjectSerializer):
 
 
 class ProjectSerializerWithReport(BaseModelSerializer):
+    """
+    Serializer that displays additional 'report' field.
+    """
+
     report = CustomUserSerializerWithTodoStats(many=True, exclude_fields=["id"])
 
     class Meta:
@@ -47,10 +52,11 @@ class ProjectSerializerWithReport(BaseModelSerializer):
 
 
 class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
+    """
+    Serializer that handles adding and removing users from a project.
+    """
 
-    user_ids = serializers.PrimaryKeyRelatedField(
-        source="members", many=True, queryset=CustomUser.objects.all(), write_only=True
-    )
+    user_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
     logs = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -62,25 +68,24 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
         return self.context.get("logs", {})
 
     def get_users_to_add(self, instance, member_ids, project_current_members):
-        user_project_data = list(
-            CustomUser.objects.filter(id__in=member_ids).annotate(
-                project_detail=ArrayAgg("projectmember__project_id")
-            )
+        user_project_data = CustomUser.objects.filter(id__in=member_ids).annotate(
+            project_count=Count("projectmember__project_id")
         )
+
         new_members = []
         logs = {}
 
         for member in user_project_data:
-            if member in project_current_members:
-                logs[member.id] = f"User is already a Member."
-                continue
-            if len(member.project_detail) >= 2:
-                logs[member.id] = f"Cannot add as User is a member in two projects."
-                continue
             if len(project_current_members) >= instance.max_members:
                 logs[member.id] = (
                     f"Project cannot have more than {instance.max_members} members."
                 )
+                continue
+            if member.id in project_current_members:
+                logs[member.id] = f"User is already a Member."
+                continue
+            if member.project_count >= 2:
+                logs[member.id] = f"Cannot add as User is a member in two projects."
                 continue
             new_members.append(member)
             logs[member.id] = f"User added to project successfully."
@@ -90,33 +95,39 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
         ]
         ProjectMember.objects.bulk_create(project_members_to_add)
 
+        # Informing about non-existent users
+        for member_id in member_ids:
+            if member_id not in logs:
+                logs[member_id] = "User doesn't exist."
+
         return logs
 
-    def get_users_to_remove(self, instance, members_data, project_current_members):
+    def get_users_to_remove(self, instance, member_ids, project_current_members):
         remove_user = []
         logs = {}
-        for member in members_data:
+        for member in member_ids:
             if member in project_current_members:
                 remove_user.append(member)
                 logs[member.id] = "User removed successfully."
             else:
                 logs[member.id] = "User is not a member of project."
-        ProjectMember.objects.filter(project=instance, member__in=remove_user).delete()
+        ProjectMember.objects.filter(
+            project=instance, member_id__in=remove_user
+        ).delete()
 
         return logs
 
     def update(self, instance, validated_data):
 
-        members_data = validated_data.pop("members", None)
-        member_ids = [member.id for member in members_data] if members_data else []
-        project_current_members = instance.members.all()
+        member_ids = validated_data.pop("user_ids", None)
+        project_current_members = instance.members.values_list("id", flat=True)
         logs = {}
-        if "add" == self.context["action"]:
+        if self.context["action"] == "add":
             logs = self.get_users_to_add(instance, member_ids, project_current_members)
 
         else:
             logs = self.get_users_to_remove(
-                instance, members_data, project_current_members
+                instance, member_ids, project_current_members
             )
 
         self.context["logs"] = logs
