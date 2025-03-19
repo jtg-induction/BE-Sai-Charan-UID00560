@@ -1,4 +1,4 @@
-from django.contrib.postgres.aggregates import ArrayAgg
+from django.db import transaction
 from django.db.models import Count
 from rest_framework import serializers
 
@@ -90,10 +90,17 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
             new_members.append(member)
             logs[member.id] = f"User added to project successfully."
 
-        project_members_to_add = [
-            ProjectMember(project=instance, member=member) for member in new_members
-        ]
-        ProjectMember.objects.bulk_create(project_members_to_add)
+        try:
+            with transaction.atomic():
+                project_members_to_add = [
+                    ProjectMember(project=instance, member=member)
+                    for member in new_members
+                ]
+                ProjectMember.objects.bulk_create(project_members_to_add)
+        except Exception:
+            raise serializers.ValidationError(
+                {"error": "Unexpected error while adding errors"}
+            )
 
         # Informing about non-existent users
         for member_id in member_ids:
@@ -111,6 +118,7 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
                 logs[member.id] = "User removed successfully."
             else:
                 logs[member.id] = "User is not a member of project."
+
         ProjectMember.objects.filter(
             project=instance, member_id__in=remove_user
         ).delete()
@@ -120,12 +128,15 @@ class ProjectUpdateMemberSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         member_ids = validated_data.pop("user_ids", None)
+        if not member_ids:
+            return instance
+
         project_current_members = instance.members.values_list("id", flat=True)
         logs = {}
         if self.context["action"] == "add":
             logs = self.get_users_to_add(instance, member_ids, project_current_members)
 
-        else:
+        elif self.context["action"] == "remove":
             logs = self.get_users_to_remove(
                 instance, member_ids, project_current_members
             )

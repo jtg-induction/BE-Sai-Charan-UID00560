@@ -29,7 +29,7 @@ class ProjectMemberApiViewSet(
         serializer.save()
 
         return Response(
-            {"logs": serializer.context["logs"]},
+            {"logs": serializer.data["logs"]},
             status=status.HTTP_200_OK,
         )
 
@@ -48,7 +48,7 @@ class ProjectMemberApiViewSet(
 
         return Response(
             {
-                "logs": serializer.context["logs"],
+                "logs": serializer.data["logs"],
             },
             status=status.HTTP_200_OK,
         )
