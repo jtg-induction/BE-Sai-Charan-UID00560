@@ -38,3 +38,56 @@ class TodoSerializerWithUserName(TodoSerializer):
             "creator",
             "email",
         ]
+
+
+class TodoViewSetCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for handling create operations on Todo.
+    """
+
+    class Meta:
+        model = Todo
+        fields = [
+            TodoFields.ID.value,
+            TodoFields.NAME.value,
+            TodoFields.DONE.value,
+            TodoFields.DATE_CREATED.value,
+        ]
+        read_only_fields = [
+            TodoFields.ID.value,
+            TodoFields.DONE.value,
+            TodoFields.DATE_CREATED.value,
+        ]
+
+    def create(self, validated_data):
+        validated_data["user"] = self.context["request"].user
+        return super().create(validated_data)
+
+
+class TodoUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for handling update operations on Todo.
+    """
+
+    class Meta:
+        model = Todo
+        fields = [
+            TodoFields.ID.value,
+            TodoFields.NAME.value,
+            TodoFields.DONE.value,
+            TodoFields.DATE_CREATED.value,
+            TodoFields.DATE_COMPLETED.value,
+        ]
+
+
+class TodoViewSetSerializer(serializers.ModelSerializer):
+    """
+    Serializer for presenting Todo data in responses.
+    """
+
+    todo_id = serializers.IntegerField(source="id")
+    todo = serializers.CharField(source="name")
+
+    class Meta:
+        model = Todo
+        fields = ["todo_id", "todo", "done"]
