@@ -1,10 +1,13 @@
 from django.db import models
 
 from users.models import CustomUser
-from utils.models import BaseModel
 
 
-class Todo(BaseModel):
+class Todo(models.Model):
+    """
+    Model representing a Todo
+    """
+
     name = models.CharField(max_length=250)
     done = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
