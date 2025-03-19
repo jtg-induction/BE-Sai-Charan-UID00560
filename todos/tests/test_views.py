@@ -8,23 +8,35 @@ from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 
 from todos.models import Todo
+from users.serializers import CustomUserSerializer
 
 
 class TodoAPIViewSetTestCase(APITestCase):
     def setUp(self):
         # Create test users
-        self.user1 = get_user_model().objects.create_user(
-            email="user1@example.com",
-            password="password123",
-            first_name="User",
-            last_name="One",
-        )
-        self.user2 = get_user_model().objects.create_user(
-            email="user2@example.com",
-            password="password123",
-            first_name="User",
-            last_name="Two",
-        )
+        user_data1 = {
+            "first_name": "User",
+            "last_name": "One",
+            "email": "user1@example.com",
+            "password": "password123",
+            "confirm_password": "password123",
+        }
+
+        user_data2 = {
+            "first_name": "User",
+            "last_name": "Two",
+            "email": "user2@example.com",
+            "password": "password123",
+            "confirm_password": "password123",
+        }
+
+        serializer1 = CustomUserSerializer(data=user_data1)
+        if serializer1.is_valid():
+            self.user1 = serializer1.save()
+
+        serializer2 = CustomUserSerializer(data=user_data2)
+        if serializer2.is_valid():
+            self.user2 = serializer2.save()
 
         # Create tokens for users
         self.token1 = Token.objects.create(user=self.user1)
@@ -106,18 +118,16 @@ class TodoAPIViewSetTestCase(APITestCase):
         """
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token1.key}")
         update_data = {
-            "todo_id": self.todo1.id,
-            "todo": "Updated Todo",
+            "name": "Updated Todo",
             "done": True,
         }
         response = self.client.put(self.detail_url1, update_data, format="json")
         self.assertEqual(status.HTTP_200_OK, response.status_code)
 
         data = json.loads(response.content)
-        self.assertEqual("Updated Todo", data["todo"])
+        self.assertEqual("Updated Todo", data["name"])
         self.assertTrue(data["done"])
 
-        # Verify the change persisted in the database
         self.todo1.refresh_from_db()
         self.assertEqual("Updated Todo", self.todo1.name)  # Using name field
         self.assertTrue(self.todo1.done)
